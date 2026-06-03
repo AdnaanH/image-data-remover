@@ -1,92 +1,183 @@
 ﻿<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#101314" />
-  <title>CleanFrame Docs</title>
-  <link rel="stylesheet" href="/static/css/docs.css" />
-</head>
-<body>
-  <div class="wrap">
-    <header>
-      <nav>
-        <a href="/">Workbench</a>
-        <a href="/api/docs">OpenAPI</a>
-        <a href="/health">Health</a>
-      </nav>
-      <h1>CleanFrame developer docs</h1>
-      <p>CleanFrame is a FastAPI image privacy service for metadata stripping, batch manifests, and optional background removal. This page is written for developers integrating the API or reviewing the project.</p>
-    </header>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#101314" />
+    <title>CleanFrame Docs</title>
+    <link rel="stylesheet" href="/static/css/docs.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <nav>
+          <a href="/">Workbench</a>
+          <a href="/api/docs">OpenAPI</a>
+          <a href="/health">Health</a>
+        </nav>
+        <h1>CleanFrame developer docs</h1>
+        <p>
+          CleanFrame is a FastAPI image privacy service for metadata stripping,
+          batch manifests, and optional background removal. This page is written
+          for developers integrating the API or reviewing the project.
+        </p>
+      </header>
 
-    <main>
-      <section>
-        <h2>Quick Start</h2>
-        <pre>python -m venv .venv
+      <main>
+        <section>
+          <h2>Quick Start</h2>
+          <pre>
+python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-python server.py</pre>
-        <p>Open <code>http://127.0.0.1:8765</code>. FastAPI's interactive schema is available at <code>/api/docs</code>.</p>
-      </section>
+python server.py</pre
+          >
+          <p>
+            Open <code>http://127.0.0.1:8765</code>. FastAPI's interactive
+            schema is available at <code>/api/docs</code>.
+          </p>
+        </section>
 
-      <section>
-        <h2>Authentication</h2>
-        <p>Set <code>API_KEY</code> in the server environment to protect write endpoints. Do not hard-code secrets in frontend files, Docker images, or commits.</p>
-        <pre>$env:API_KEY="replace-with-a-long-random-token"
-python server.py</pre>
-        <p>Clients may send either <code>Authorization: Bearer &lt;key&gt;</code> or <code>X-API-Key: &lt;key&gt;</code>. The browser workbench stores the key in <code>sessionStorage</code> only.</p>
-      </section>
+        <section>
+          <h2>Authentication</h2>
+          <p>
+            Set <code>API_KEY</code> in the server environment to protect write
+            endpoints. Do not hard-code secrets in frontend files, Docker
+            images, or commits.
+          </p>
+          <pre>
+$env:API_KEY="replace-with-a-long-random-token"
+python server.py</pre
+          >
+          <p>
+            Clients may send either
+            <code>Authorization: Bearer &lt;key&gt;</code> or
+            <code>X-API-Key: &lt;key&gt;</code>. The browser workbench stores
+            the key in <code>sessionStorage</code> only.
+          </p>
+        </section>
 
-      <section>
-        <h2>Endpoints</h2>
-        <table>
-          <thead><tr><th>Route</th><th>Purpose</th><th>Output</th></tr></thead>
-          <tbody>
-            <tr><td><code>GET /health</code></td><td>Runtime limits and optional tool availability.</td><td>JSON</td></tr>
-            <tr><td><code>POST /api/strip</code></td><td>Clean one uploaded image.</td><td>Image file</td></tr>
-            <tr><td><code>POST /api/strip-zip</code></td><td>Clean multiple uploaded images.</td><td>ZIP with <code>manifest.json</code></td></tr>
-            <tr><td><code>POST /api/remove-bg</code></td><td>Remove background with rembg, then optionally re-encode.</td><td>PNG file</td></tr>
-          </tbody>
-        </table>
-      </section>
+        <section>
+          <h2>Endpoints</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Route</th>
+                <th>Purpose</th>
+                <th>Output</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>GET /health</code></td>
+                <td>Runtime limits and optional tool availability.</td>
+                <td>JSON</td>
+              </tr>
+              <tr>
+                <td><code>POST /api/strip</code></td>
+                <td>Clean one uploaded image.</td>
+                <td>Image file</td>
+              </tr>
+              <tr>
+                <td><code>POST /api/strip-zip</code></td>
+                <td>Clean multiple uploaded images.</td>
+                <td>ZIP with <code>manifest.json</code></td>
+              </tr>
+              <tr>
+                <td><code>POST /api/remove-bg</code></td>
+                <td>
+                  Remove background with rembg, then optionally re-encode.
+                </td>
+                <td>PNG file</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
 
-      <section>
-        <h2>Examples</h2>
-        <h3>Single Image</h3>
-        <pre>curl -X POST "http://127.0.0.1:8765/api/strip?output=png&exiftool_check=false" \
+        <section>
+          <h2>Examples</h2>
+          <h3>Single Image</h3>
+          <pre>
+curl -X POST "http://127.0.0.1:8765/api/strip?output=png&exiftool_check=false" \
   -F "file=@photo.jpg" \
-  -o photo_clean.png</pre>
-        <h3>Authenticated Batch ZIP</h3>
-        <pre>curl -X POST "http://127.0.0.1:8765/api/strip-zip?preserve_alpha=true" \
+  -o photo_clean.png</pre
+          >
+          <h3>Authenticated Batch ZIP</h3>
+          <pre>
+curl -X POST "http://127.0.0.1:8765/api/strip-zip?preserve_alpha=true" \
   -H "Authorization: Bearer $API_KEY" \
   -F "files=@one.jpg" \
   -F "files=@two.png" \
-  -o cleanframe_batch.zip</pre>
-      </section>
+  -o cleanframe_batch.zip</pre
+          >
+        </section>
 
-      <section>
-        <h2>Configuration</h2>
-        <table>
-          <thead><tr><th>Variable</th><th>Default</th><th>Description</th></tr></thead>
-          <tbody>
-            <tr><td><code>API_KEY</code></td><td>empty</td><td>Protects mutation endpoints when set.</td></tr>
-            <tr><td><code>STRIP_HOST</code></td><td><code>127.0.0.1</code></td><td>Development bind address.</td></tr>
-            <tr><td><code>STRIP_PORT</code></td><td><code>8765</code></td><td>Local port. Cloud <code>PORT</code> is also supported.</td></tr>
-            <tr><td><code>STRIP_MAX_MB</code></td><td><code>25</code></td><td>Maximum size per uploaded file.</td></tr>
-            <tr><td><code>STRIP_MAX_ZIP_TOTAL_MB</code></td><td><code>100</code></td><td>Total size cap for ZIP batch uploads.</td></tr>
-            <tr><td><code>STRIP_MAX_BATCH_FILES</code></td><td><code>40</code></td><td>Batch file count cap, clamped to 200.</td></tr>
-            <tr><td><code>EXIFTOOL_PATH</code></td><td>auto</td><td>Optional explicit ExifTool binary path.</td></tr>
-            <tr><td><code>STRIP_ALLOWED_ORIGINS</code></td><td>empty</td><td>Comma-separated CORS allowlist for external clients.</td></tr>
-          </tbody>
-        </table>
-      </section>
+        <section>
+          <h2>Configuration</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Variable</th>
+                <th>Default</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>API_KEY</code></td>
+                <td>empty</td>
+                <td>Protects mutation endpoints when set.</td>
+              </tr>
+              <tr>
+                <td><code>STRIP_HOST</code></td>
+                <td><code>127.0.0.1</code></td>
+                <td>Development bind address.</td>
+              </tr>
+              <tr>
+                <td><code>STRIP_PORT</code></td>
+                <td><code>8765</code></td>
+                <td>Local port. Cloud <code>PORT</code> is also supported.</td>
+              </tr>
+              <tr>
+                <td><code>STRIP_MAX_MB</code></td>
+                <td><code>25</code></td>
+                <td>Maximum size per uploaded file.</td>
+              </tr>
+              <tr>
+                <td><code>STRIP_MAX_ZIP_TOTAL_MB</code></td>
+                <td><code>100</code></td>
+                <td>Total size cap for ZIP batch uploads.</td>
+              </tr>
+              <tr>
+                <td><code>STRIP_MAX_BATCH_FILES</code></td>
+                <td><code>40</code></td>
+                <td>Batch file count cap, clamped to 200.</td>
+              </tr>
+              <tr>
+                <td><code>EXIFTOOL_PATH</code></td>
+                <td>auto</td>
+                <td>Optional explicit ExifTool binary path.</td>
+              </tr>
+              <tr>
+                <td><code>STRIP_ALLOWED_ORIGINS</code></td>
+                <td>empty</td>
+                <td>Comma-separated CORS allowlist for external clients.</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
 
-      <section>
-        <h2>Security Notes</h2>
-        <p class="note">CleanFrame re-encodes pixel data to remove metadata and deletes temporary files after each response. It is still an image-processing service, so host it behind HTTPS, use a long random <code>API_KEY</code>, keep upload limits conservative, and monitor server logs.</p>
-      </section>
-    </main>
-  </div>
-</body>
+        <section>
+          <h2>Security Notes</h2>
+          <p class="note">
+            CleanFrame re-encodes pixel data to remove metadata and deletes
+            temporary files after each response. It is still an image-processing
+            service, so host it behind HTTPS, use a long random
+            <code>API_KEY</code>, keep upload limits conservative, and monitor
+            server logs.
+          </p>
+        </section>
+      </main>
+    </div>
+  </body>
 </html>
-
