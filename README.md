@@ -2,6 +2,12 @@
 
 CleanFrame is a FastAPI image privacy workbench for stripping metadata from images, creating audited batch ZIPs, and optionally producing background-removed cut-outs. It is built as a portfolio-grade full-stack utility: practical UI, documented API, environment-only secrets, conservative upload limits, Docker support, and a package layout that is easy to extend.
 
+## Live Staging
+
+- Workbench: <https://cleanframe-staging.onrender.com/>
+- Developer docs: <https://cleanframe-staging.onrender.com/docs>
+- OpenAPI: <https://cleanframe-staging.onrender.com/api/docs>
+
 ## Features
 
 - Re-encodes image pixels to remove EXIF, IPTC, XMP, ICC/profile metadata exposed through Pillow.
