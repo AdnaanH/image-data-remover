@@ -4,5 +4,7 @@ __pycache__
 .venv
 venv
 .env
-*.md
 .cursor
+*.log
+*_clean.*
+*_cutout.*
